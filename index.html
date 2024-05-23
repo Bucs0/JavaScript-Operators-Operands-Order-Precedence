@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Average Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #dbedf2;
+            color: #000000;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 500px;
+            background: rgb(255, 255, 255);
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+        h1 {
+            color: #0199a6;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 5px 0 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+            border: 1px solid #b7b7b7;
+            border-radius: 5px;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button.reset {
+            background-color: #f44336;
+        }
+        button.reset:hover {
+            background-color: #e41e1e;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .error {
+            color: #f44336;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        @media (min-width: 600px) {
+            input[type="text"], input[type="number"] {
+                width: calc(50% - 12px);
+                margin: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Grade Average Calculator</h1>
+        <p>Enter your grades for the following subjects (e.g., 85, 90):</p>
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" placeholder="Your Name">
+        </div>
+        <div>
+            <label for="section">Grade and Section:</label>
+            <input type="text" id="section" placeholder="Your Section">
+        </div>
+        <div>
+            <label for="grade1">FITT 2:</label>
+            <input type="number" id="grade1" placeholder="85" min="0" max="100">
+        </div>
+        <div>
+            <label for="grade2">GNED 03:</label>
+            <input type="number" id="grade2" placeholder="90" min="0" max="100">
+        </div>
+        <div>
+            <label for="grade3">GNED 12:</label>
+            <input type="number" id="grade3" placeholder="88" min="0" max="100">
+        </div>
+        <div>
+            <label for="grade4">Web System and Technology:</label>
+            <input type="number" id="grade4" placeholder="92" min="0" max="100">
+        </div>
+        <div>
+            <label for="grade5">DCIT 23:</label>
+            <input type="number" id="grade5" placeholder="87" min="0" max="100">
+        </div>
+        <div class="buttons">
+            <button onclick="calculateAverage()">Calculate Average</button>
+            <button class="reset" onclick="resetFields()">Reset</button>
+        </div>
+        <div class="result" id="result"></div>
+        <div class="error" id="error"></div>
+    </div>
+
+    <script>
+        function calculateAverage() {
+            const name = document.getElementById('name').value.trim();
+            const section = document.getElementById('section').value.trim();
+            const grades = [];
+            let valid = true;
+
+            for (let i = 1; i <= 5; i++) {
+                const grade = parseFloat(document.getElementById('grade' + i).value);
+                if (isNaN(grade) || grade < 0 || grade > 100) {
+                    valid = false;
+                } else {
+                    grades.push(grade);
+                }
+            }
+
+            if (!name || !section) {
+                document.getElementById('error').innerText = 'Please enter your name and section.';
+                document.getElementById('result').innerText = '';
+                return;
+            }
+
+            if (!valid || grades.length !== 5) {
+                document.getElementById('error').innerText = 'Please enter valid grades between 0 and 100 for all subjects.';
+                document.getElementById('result').innerText = '';
+                return;
+            }
+
+            const average = grades.reduce((sum, grade) => sum + grade, 0) / grades.length;
+            document.getElementById('result').innerText = `${name} (${section}), your average grade is: ${average.toFixed(2)}`;
+            document.getElementById('error').innerText = '';
+        }
+
+        function resetFields() {
+            document.getElementById('name').value = '';
+            document.getElementById('section').value = '';
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById('grade' + i).value = '';
+            }
+            document.getElementById('result').innerText = '';
+            document.getElementById('error').innerText = '';
+        }
+    </script>
+</body>
+</html>
